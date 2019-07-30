@@ -1,0 +1,30 @@
+一：创建，提交并修改文件
+	git init   创建与Git的连接
+	git add xxx xxx  提交文件，一次可以添加多个文件。
+	git commit -m"注释部分"确认提交。
+	git status 查看当前仓库中的修改状态
+	git diff 查看仓库中修改的具体内容
+
+
+二：版本回退以及撤销，删除
+	git log 查看修改日志
+	git reset --hard HEAD^版本回溯  也可以是 git reset --hard （commit id号）
+	git reflog 用于记录每一次命令。用于后悔版本回退，可以找到每一次的版本号
+	git checkout -- file 撤销在工作区或暂存区的修改或删除
+三：Github
+	git remote add origin git @github.com:(账户名)/(仓库名).git  关联GitHub的仓库或者git remote set-url (url)
+	git push -u origin master		推送
+
+四：分支管理
+	git checkout -b dev创建分支dev并切换到该分支相当于:git branch 分支名  和git checkout 分支名
+	git branch 查看所有分支
+	git merge 分支名    将制定的分支合并到当前分支
+	git branch -d 分支名 删除指定分支名 如果分支被修改过。则用-D
+	git merge --no-ff -m "commit描述" 分支名        普通合并模式。可以合并历史
+	git stash 存储当前分支。	
+	git stash list 列出当前存储的工作区
+	git stash pop 恢复工作并删除stash
+	git remote 查看分支
+	git branch --set-upstream-to <branch-name> origin/<branch-name> 将本地分支与远程建立连接
+	
+	如果和另一人提交有冲突。先git pull拉下来。合并之后再推送

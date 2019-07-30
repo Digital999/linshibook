@@ -1,0 +1,28 @@
+1、python和其他语言的区别
+	python 是一门解释性动态的脚本语言，相比于其他语言，python具有高效，简洁的特性，能依靠较少的代码完成复杂的功能，但与之相反的事python的运行速度偏慢，每次运行都需要翻译一次。相比于编译型语言，只需要翻译一次。
+
+2、python3与python2区别
+	
+	列举：
+		1：python3的print需要加括号，而2不需要。python2里的print是一个类
+		2：python3中的循环使用range,而python2使用xrange。range生成的是一个生成器，而xrange生成的一个list对象
+		3：python3的默认的字符串类型为ASCLL，Python2默认的是Unicode
+		4：python3的/结果是浮点型，python2是整型
+		5：
+3、什么是PEP8
+	PEP8是一门针对python代码的风格指南
+
+4、什么是DocString
+	DocString是Python一个重要的工具，用来解释文档程序，使用functionName.__doc__可以查看函数中的解释。
+
+5、python不允许tab和空格混合使用，四个空格代表一个tab
+
+6、规范代码的工具pylint
+
+	安装：pip install pylint
+	配置：在终端输入pylint --persistent=n --generate-rcfile > pylint.conf 
+		会自动在当前文件夹下下载配置文件
+		然后就可以开始检查
+		
+		pylint --rcfile=pylint.conf ModolName.py   检查单个文件
+		

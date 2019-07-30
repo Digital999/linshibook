@@ -1,0 +1,65 @@
+scrapy编写步骤：
+	第一步：编写Items.py文件，定义数据类，
+		1、数据为一个字典类型。要定义字典的key值，并且作为scrapy.Field（）对象。
+	第二步，编写piplelines.py文件，定义管道，并且处理爬取后的数据，选择性存储，去重，清洗。
+		去重：将返回过来的字典转化为集合再转化为字典即可去重
+		清洗。对数据进行格式处理、
+		存储。将数据存储到对应的文件中。
+	第三步，编写spider，
+		定义name。每个spider都有一个不同的名字。
+		定义start_urls。如果没有重写start_requests方法，那么scrapy会自动请求start_urls的方法。	
+			一般来说，第一个请求如果是get请求，则不需要重写，只要在parse函数中return 一个请求，并且回调到另一个处				理数据的函数即可
+			如果一个请求是post请求，则需要重写start_requests请求。也只需要在函数中return 一个scrapy.FormRequest即				可，然后再回调到一个处理内容的函数。
+		为了给每个spider选择pipleline。
+			需要在每个spider文件中声明。
+				custom_settings = {
+       			 'ITEM_PIPELINES': {'管道名': 优先级},
+    											}	
+		编写spider大致与不使用框架的爬虫相同
+	第四部，配置piplelines信息，配置默认的headers，将obey_rule设置为False。
+
+
+要点
+
+如何同时运行多个spider
+	在settings.py的同级目录下新建一个run.py。在文件中导入scrapy下的crawler类中的CrawlerProcess方法
+	再导入项目配置模块。from scrapy.utils.project import get_project_settings
+	再导入自己需要执行的spider的模块。（需要运行哪几个就导入哪几个，可能会报错但是没关系）
+	实例化CrawlerProcess。CrawlerProcess(get_project_settings)
+	传参。对象.crawl(spider[name])
+	执行。对象.start()
+   运行run.py即可同时执行多个spider
+
+配置数据库信息（mysql）
+	1、在settings.py中配置数据库信息。
+		MYSQL_CONNECTION='mysql+pymysql:root:1234@localhost/数据库名？charset=utf8'
+	2、对pipleline.py的管道类进行初始化，实现数据库连接。
+	3、定义映射类。
+配置数据库信息代码：
+
+pipelines.py中的部分：
+
+from sqlalchemy import *
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+from scrapy.conf import settings
+#定义映射类
+Base=declarative_base()
+class scrapy_db(Base):
+    __tablename__='scrapy_db'
+    id=Column(Integer(),primary_key=True)
+    Titlename=Column(String(2000))
+
+__init__中的部分：
+    
+        #初始化，连接数据库
+        conntion = settings['MYSQL_CONNECTION']
+        engine = create_engine(conntion, echo=False,pool_size=2000)
+        DBSession = sessionmaker(bind=engine)
+        self.SQLsession=DBSession()
+        #创建数据表
+        Base.metadata.create_all(engine)
+process_item中的部分：
+	self.SQLsession.execute(scrapy_db.__table__.insert(), [{'Titlename': i} for i in item['title']])
+        self.SQLsession.commit()
+        return item

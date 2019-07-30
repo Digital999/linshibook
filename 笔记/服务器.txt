@@ -1,0 +1,2 @@
+查看端口情况：netstat -lnp|grep 88  
+杀掉进程： kill -9 进程号

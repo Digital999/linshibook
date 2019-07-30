@@ -1,0 +1,35 @@
+一：单例设计模式
+
+使用模块，讲需要使用单一实例的类写入模块中，需要时导入即可。
+使用_new_方法，判断是否有实例，若有则返回该实例，若无则，用_new_创建个实例。
+
+class Singleton(object):
+	def __init__:
+		pass
+	def __new__(cls,*args,**kwargs):
+		if not hasattr(Singleton,'_instance'):
+			Singleton._instance=object.__new__(cls)
+		return Singleton._instance
+
+二：工厂模式
+
+当不知道用户要创建什么样的对象时，写一个工厂类，用以区分用户创建的对象类型，返回相应的类。
+class Male:
+    def __init__(self,name):
+
+        print('Hello,Mr',name)
+class Female:
+    def __init__(self,name):
+
+        print('Hello,Mrs',name)
+
+class Factory:
+    def getsex(self,name,sex):
+        if sex=='M':
+            return Male(name)
+        if sex=='F':
+            return Female(name)
+if __name__ == '__main__':
+    factory=Factory()
+    person=factory.getsex('Lux','F')
+    person2=factory.getsex('wang','M')
